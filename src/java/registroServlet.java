@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -39,6 +40,9 @@ public class registroServlet extends HttpServlet {
             String palabraIn = request.getParameter("palabraIngles");
             String defEs = request.getParameter("defEspañol");
             String defIn = request.getParameter("defIngles");
+            ServletContext sc = this.getServletContext();
+            String path = sc.getRealPath("/WEB-INF/datosDiccionario.txt");
+            path = path.replace('\\','/');
             
             datos = null;
             diccionario dic = new diccionario();
@@ -49,22 +53,11 @@ public class registroServlet extends HttpServlet {
             
             datos.add(dic);
             String[] lineas = { "Uno", "Dos", "Tres", "Cuatro", "Cinco", "Seis", "Siete", "..." };
-
-		/** FORMA 1 DE ESCRITURA **/
-		FileWriter fichero = null;
 		try {
-
-			fichero = new FileWriter("C:/Users/Ruben/Desktop/JAVA/Diccionario/src/java/datosDiccionario.txt");
-
-			// Escribimos linea a linea en el fichero
-			for (String linea : lineas) {
-				fichero.write(linea + ", ");
-                                out.print("<h1>..</h1>");
-			}
-                        
-			fichero.close();
-
-		} catch (Exception ex) {
+                    FileWriter fichero = new FileWriter(path);
+                    fichero.write(dic.getPalabraEspañol() + ", " + dic.getPalabraIngles());
+                    fichero.close();
+		} catch (IOException ex) {
 			out.println("Mensaje de la excepción: " + ex.getMessage());
 		}
             

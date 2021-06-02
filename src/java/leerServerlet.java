@@ -76,7 +76,7 @@ public class leerServerlet extends HttpServlet {
             } catch (IOException e2) {
             }
             if (!traduccion) {
-                //en caso que no se encuentre la traduccion de la palabra buscada para que sea redireccionado a la vista de registro
+                //en caso que no se encuentre la traduccion de la palabra buscada se redirecciona a la vista de registro
                 RequestDispatcher rd;
                 rd = request.getRequestDispatcher("/jsp/registro.jsp");
                 rd.forward(request, response);
