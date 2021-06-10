@@ -14,27 +14,22 @@
     <body>
         <h3>Registre el nuevo vocablo en el diccionario</h3>
         <div>
-            <h3>Registrar Nuevo Usuario</h3>
             <form action="registroServlet" method="post">
                 <div>
                     <label for="palabraEspañol">Palabra en Español</label><br>
-                    <input type="text" name="palabraEspañol" id="palabraEspañol">
+                    <input type="text" name="palabraEspanol" id="palabraEspanol" required>
                 </div>
                 <div>
-                    <label for="palabraIngles">Traduccion en Ingles</label><br>
-                    <input type="text" name="palabraIngles" id="palabraIngles">
+                    <label for="palabraIngles">Palabra en Ingles</label><br>
+                    <input type="text" name="palabraIngles" id="palabraIngles" required>
                 </div>
                 <div>
-                    <label for="defEspañol">Significado en Español</label><br>
-                    <input type="text" name="defEspañol" id="defEspañol">
-                </div>
-                <div>
-                    <label for="defIngles">Significado en Ingles</label><br>
-                    <input type="text" name="defIngles" id="defIngles">
+                    <label for="defEspañol">Concepto</label><br>
+                    <textarea required id="concepto" name="concepto" rows="4" cols="50" placeholder="Escriba el concepto de la palabra"></textarea>
                 </div>
                 <div>
                     <br><button type="submit" class="boton">Registrar</button>
-                    <button type="reset" class="boton">Limpiar</button>
+                        <button type="reset" class="boton">Limpiar</button>
                 </div>
             </form>
         </div>

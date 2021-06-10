@@ -10,21 +10,20 @@ import java.util.ArrayList;
  * @author Ruben
  */
 public class diccionario {
-    private String palabraEspañol;
+    private String palabraEspanol;
     private String palabraIngles;
-    private String definicionEspañol;
-    private String definicionIngles;
+    private String concepto;
 
     public diccionario() {
     
     }
 
-    public String getPalabraEspañol() {
-        return palabraEspañol;
+    public String getPalabraEspanol() {
+        return palabraEspanol;
     }
 
-    public void setPalabraEspañol(String palabraEspañol) {
-        this.palabraEspañol = palabraEspañol;
+    public void setPalabraEspanol(String palabraEspanol) {
+        this.palabraEspanol = palabraEspanol;
     }
 
     public String getPalabraIngles() {
@@ -35,50 +34,39 @@ public class diccionario {
         this.palabraIngles = palabraIngles;
     }
 
-    public String getDefinicionEspañol() {
-        return definicionEspañol;
+    public String getConcepto() {
+        return concepto;
     }
 
-    public void setDefinicionEspañol(String definicionEspañol) {
-        this.definicionEspañol = definicionEspañol;
-    }
-
-    public String getDefinicionIngles() {
-        return definicionIngles;
-    }
-
-    public void setDefinicionIngles(String definicionIngles) {
-        this.definicionIngles = definicionIngles;
-    }
-    public ArrayList obtenertodasLasLineas() throws FileNotFoundException, IOException{
-        File fichero = new File("C://Users//Ruben//Desktop//JAVA//Diccionario//src//java//datosDiccionario.txt");
-        FileReader preparar = new FileReader(fichero);
-        BufferedReader leer = new BufferedReader(preparar);
-        //leer todo el documento de hasta que ya no haya registros 
-        ArrayList linea = null;
-        String raw;
-        while((raw=leer.readLine()) != null){
-            linea.add(raw);
-        }
-        return linea;
+    public void setConcepto(String concepto) {
+        this.concepto = concepto;
     }
     
-    public void guardarPalabraNueva(String palabraEspañol,String palabraIngles, String definicionEspañol, String definicionIngles) throws IOException{
-        FileWriter fichero = new FileWriter("C://Users//Ruben//Desktop//JAVA//Diccionario//src//java//datosDiccionario.txt");
-        PrintWriter escribir = new PrintWriter(fichero);
-        escribir.print(palabraEspañol + palabraIngles + definicionEspañol + definicionIngles);
-        fichero.close();
-    }
     
-    public ArrayList imprimir() throws FileNotFoundException, IOException{
-        ArrayList arr = null;
-        String cadena;
-        FileReader f = new FileReader("C://Users//Ruben//Desktop//JAVA//Diccionario//src//java//datosDiccionario.txt");
-        BufferedReader b = new BufferedReader(f);
-        while((cadena = b.readLine())!=null) {
-            arr.add(cadena);
-        }
-        b.close();
-        return arr;
-      }
+    public void guardarPalabraNueva(String path, String palabraEspanol,String palabraIngles, String concepto) throws IOException{
+        BufferedWriter bw = null;
+                FileWriter fw = null;
+                //String data = "Hola stackoverflow.com...";
+                File file = new File(path);
+                // Si el archivo no existe, se crea!
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+                // flag true, indica adjuntar información al archivo.
+                fw = new FileWriter(file.getAbsoluteFile(), true);
+                bw = new BufferedWriter(fw);
+                bw.write("\r\n" + palabraEspanol + ", " + palabraIngles + ", " + concepto);
+                //System.out.println("información agregada!");
+                try {
+                    //Cierra instancias de FileWriter y BufferedWriter
+                    if (bw != null) {
+                        bw.close();
+                    }
+                    if (fw != null) {
+                        fw.close();
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+    }
 }

@@ -17,7 +17,7 @@
                     <label>Palabra</label>
                     <input type="text" name="palabra"><br>
                     <input type="radio" id="es" name="idioma" value="es">
-                    <label for="es">Esnañol</label><br>
+                    <label for="es">Español</label><br>
                     <input type="radio" id="eg" name="idioma" value="eg">
                     <label for="eg">Ingles</label><br>
                     <br><button type="submit">Traducir</button>

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,15 +27,8 @@ public class leerServerlet extends HttpServlet {
     private static File archivo;
     private static FileReader fr;
     private static BufferedReader br;
-    public String path;
     public boolean traduccion;
-    public String linea; 
-    public String datos; 
-    private String palabraEspañol;
-    private String palabraIngles;
-    private String defEspañol;
-    private String defIngles;
-    private String[] arrayLinea;
+    public String linea;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -47,23 +41,39 @@ public class leerServerlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         traduccion = false;
-        path = "C:/Users/Ruben/Desktop/JAVA/Diccionario/src/java/datosDiccionario.txt";
+        ServletContext sc = this.getServletContext();
+        String path = sc.getRealPath("/WEB-INF/datosDiccionario.txt");
+        path = path.replace('\\', '/');
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String palabra = request.getParameter("palabra");
+            String seleccion = request.getParameter("idioma");
+            out.println(seleccion);
             try {
             archivo = new File(path);
             fr = new FileReader(archivo);
             br = new BufferedReader(fr);
             linea = null;
-            arrayLinea = null;
             //linea = br.readLine();
             while((linea = br.readLine())!= null) {
                 //out.print(linea.split(",")[0]);
                 if(linea.contains(",")){ //esto hace que encesariamente debe tener una "," la linea que se esta leyendo
-                    if (linea.split(",")[0].equalsIgnoreCase(palabra)) {
-                        out.println("<h1>se encontro la traduccion " + linea.split(",")[0] + linea.split(",")[1] + "</h1>");
+                    if(seleccion.equals("es")){    
+                        if (linea.split(",")[0].equalsIgnoreCase(palabra)) {
+                            out.println("<h1>Se encontro la traduccion </h1><br>" + 
+                                    "Español: " + linea.split(",")[0] + "<br>" +
+                                    "Ingles: " +linea.split(",")[1] + "<br>" +
+                                    "Concepto: " +linea.split(",")[2] );
+                            traduccion = true;
+                        }
+                    }else{
+                        if (linea.split(",")[1].equalsIgnoreCase(palabra)) {
+                        out.println("<h1>Se encontro la traduccion </h1><br>" + 
+                                "Ingles: " +linea.split(",")[1] + "<br>" +
+                                "Español: " + linea.split(",")[0] + "<br>" +
+                                "Concepto: " +linea.split(",")[2] );
                         traduccion = true;
+                    }
                     }
                 }
             }

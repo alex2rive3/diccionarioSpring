@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,7 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(urlPatterns = {"/registroServlet"})
 public class registroServlet extends HttpServlet {
 
-    public ArrayList datos;
+    public ArrayList<diccionario> datos1 = new ArrayList();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,44 +38,33 @@ public class registroServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        ServletContext sc = this.getServletContext();
+        String path = sc.getRealPath("/WEB-INF/datosDiccionario.txt");
+        path = path.replace('\\', '/');
+
         try (PrintWriter out = response.getWriter()) {
-            String palabraEs = request.getParameter("palabraEspañol");
+            String palabraEs = request.getParameter("palabraEspanol");
             String palabraIn = request.getParameter("palabraIngles");
-            String defEs = request.getParameter("defEspañol");
-            String defIn = request.getParameter("defIngles");
-            ServletContext sc = this.getServletContext();
-            String path = sc.getRealPath("/WEB-INF/datosDiccionario.txt");
-            path = path.replace('\\','/');
-            
-            datos = null;
+            String concepto = request.getParameter("concepto");
+
             diccionario dic = new diccionario();
-            dic.setPalabraEspañol(palabraEs);
+            dic.setPalabraEspanol(palabraEs);
             dic.setPalabraIngles(palabraIn);
-            dic.setDefinicionEspañol(defEs);
-            dic.setDefinicionIngles(defIn);
-            
-            datos.add(dic);
-            String[] lineas = { "Uno", "Dos", "Tres", "Cuatro", "Cinco", "Seis", "Siete", "..." };
-		try {
-                    FileWriter fichero = new FileWriter(path);
-                    fichero.write(dic.getPalabraEspañol() + ", " + dic.getPalabraIngles());
-                    fichero.close();
-		} catch (IOException ex) {
-			out.println("Mensaje de la excepción: " + ex.getMessage());
-		}
-            
-            
-            
-            
-            
+            dic.setConcepto(concepto);
+            try {
+                dic.guardarPalabraNueva(path, palabraEs, palabraIn, concepto);
+            } catch (Exception ex) {
+                out.println("Mensaje de la excepción: " + ex.getMessage());
+            }
+
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet registroServlet</title>");            
+            out.println("<title>Servlet registroServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet registroServlet at " + palabraIn+ "</h1>");
+            out.println("<h1>Servlet registroServlet at " + palabraIn + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
